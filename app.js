@@ -75,5 +75,3 @@ function game() {
         console.log("Wow, it's a draw!");
     }
 }
-
-game()

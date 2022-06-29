@@ -42,36 +42,32 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game() {
+function game(playerSelection) {
     let playerScore = 0;
     let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = prompt("What's your choice?")
-        let result = playRound(playerSelection, computerPlay())
-        if (result.charAt(4) == 'l') {
-            computerScore++;
-        }
-        else if (result.charAt(4) == 'w') {
-            playerScore++;
-        }
-        console.log(result)
-        console.log(`The score is ${playerScore} to ${computerScore}`)
-        if (playerScore >= 3) {
-            console.log("Congratulations for winning!");
-            return;
-        }
-        else if (computerScore >= 3) {
-            console.log("You lost! Oh no.");
-            return;
-        }
+    let result = playRound(playerSelection, computerPlay())
+    if (result.charAt(4) == 'l') {
+        computerScore++;
     }
-    if (playerScore > computerScore) {
+    else if (result.charAt(4) == 'w') {
+        playerScore++;
+    }
+    console.log(result)
+    console.log(`The score is ${playerScore} to ${computerScore}`)
+    if (playerScore >= 5) {
         console.log("Congratulations for winning!");
-    } 
-    else if (computerScore > playerScore) {
-        console.log("You lost! Oh no.");
+        return;
     }
-    else {
-        console.log("Wow, it's a draw!");
+    else if (computerScore >= 5) {
+        console.log("You lost! Oh no.");
+        return;
     }
 }
+
+function update(e) {
+    const result = document.querySelector('.results p');
+    result.textContent = playRound(this.querySelector('p').textContent, computerPlay());
+}
+
+const choices = document.querySelectorAll('.choice');
+choices.forEach(choice => choice.addEventListener('click', update));

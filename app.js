@@ -42,32 +42,50 @@ function playRound(playerSelection, computerSelection) {
     }
 }
 
-function game(playerSelection) {
-    let playerScore = 0;
-    let computerScore = 0;
-    let result = playRound(playerSelection, computerPlay())
-    if (result.charAt(4) == 'l') {
+let playerScore = 0;
+let computerScore = 0;
+
+function update(e) {
+    const result = document.querySelector('#result');
+    const score = document.querySelector('#score');
+    result.textContent = playRound(this.querySelector('p').textContent, computerPlay());
+    if (result.textContent.charAt(4) == 'l') {
         computerScore++;
     }
-    else if (result.charAt(4) == 'w') {
+    else if (result.textContent.charAt(4) == 'w') {
         playerScore++;
     }
-    console.log(result)
-    console.log(`The score is ${playerScore} to ${computerScore}`)
+    score.textContent = `The score is ${playerScore} to ${computerScore}`;
     if (playerScore >= 5) {
-        console.log("Congratulations for winning!");
+        score.textContent = "Congratulations for winning!";
+        endGame();
         return;
     }
     else if (computerScore >= 5) {
-        console.log("You lost! Oh no.");
+        score.textContent = "You lost! Oh no.";
+        endGame();
         return;
     }
 }
 
-function update(e) {
-    const result = document.querySelector('.results p');
-    result.textContent = playRound(this.querySelector('p').textContent, computerPlay());
+const choices = document.querySelectorAll('.choice');
+
+// removes the event listeners
+function endGame() {
+    choices.forEach(choice => choice.removeEventListener('click', update));
+    choices.forEach(choice => choice.removeEventListener('mouseover', animate));
+    choices.forEach(choice => choice.removeEventListener('mouseout', stopAnimate));
+    choices.forEach(choice => choice.classList.remove('hovering'));
 }
 
-const choices = document.querySelectorAll('.choice');
+function animate(e) {
+    this.classList.add('hovering');
+}
+
+function stopAnimate(e) {
+    this.classList.remove('hovering');
+}
+
 choices.forEach(choice => choice.addEventListener('click', update));
+choices.forEach(choice => choice.addEventListener('mouseover', animate));
+choices.forEach(choice => choice.addEventListener('mouseout', stopAnimate));
